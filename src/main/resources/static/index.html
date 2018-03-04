@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hello WebSocket</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href="/css/main.css" rel="stylesheet">
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+	<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+	<script src="/js/app.js"></script>
+</head>
+<body>
+<noscript>
+	<h1 class="warn">JavaScript отключен! Для работы чатика необходимо включить JavaScript.</h1>
+</noscript>
+
+<!-- Форма логина -->
+
+<div id="loginBlock">
+	<h1>Добро пожаловать в чат!</h1>
+	<p>Введите свое имя и выберете цвет для Ваших сообщений</p>
+	<form>
+		<p>
+			<input type="text" id="loginName" placeholder="Ваше имя"/>
+			<label for="userColorId">Цвет</label>
+			<select id="userColorId">
+				<option value="1">green</option>
+				<option value="2">red</option>
+				<option value="3">blue</option>
+			</select>
+			<input id="loginButton" type="button" value="Войти в чат"/>
+		</p>
+	</form>
+</div>
+
+<!-- Основной блок чата -->
+
+<div id="chatBlock">
+
+	<!-- Форма отправки сообщения -->
+
+	<form>
+		<p>
+			<input type="text" id="userPost" placeholder="Ваше сообщение"/>
+			<input id="messageButton" type="button" value="Послать"/>
+		</p>
+	</form>
+
+	<!-- Блок вывода сообщений -->
+
+	<div id="messagesBlock">
+		<span class="title">Сообщения:</span>
+	</div>
+
+	<!-- Блок вывода активных пользователей -->
+
+	<div id="usersBlock">
+		<span class="title">Пользователи:</span>
+	</div>
+</div>
+
+</body>
+</html>

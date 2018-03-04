@@ -1,0 +1,21 @@
+body {
+	background-color: floralwhite;
+}
+
+#chatBlock { display: none }
+
+/*option.green { color: green; background-color: green}*/
+select option {
+	margin: 40px;
+	background: rgba(0, 0, 0, 0.3);
+	color: green;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+select option[value="1"] { /* value not val */
+	background: green;
+}
+
+select option[value="2"] { /* value not val */
+	background: rgba(200, 200, 200, 0.3);
+}
