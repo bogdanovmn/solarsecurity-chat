@@ -1,13 +1,19 @@
 package com.github.bogdanovmn.solarsecurity.chat;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonDeserialize(using = UserDeserializer.class)
 class User {
+	@JsonProperty
 	private final String name;
+	@JsonProperty
 	private final int colorId;
 
-	User(String name, int colorId) {
+	@JsonCreator
+	User(
+		@JsonProperty("name") String name,
+		@JsonProperty("colorId") int colorId)
+	{
 		this.name = name;
 		this.colorId = colorId;
 	}

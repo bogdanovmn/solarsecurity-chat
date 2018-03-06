@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 class ChatController {
 	private static final String TOPIC__NEW_MESSAGE = "/topic/new-message";
+	private static final String TOPIC__REFRESH_USERS_LIST = "/topic/refresh-users-list";
 	private final ActiveUsers activeUsers;
 
 	@Autowired
@@ -16,17 +17,23 @@ class ChatController {
 	}
 
 	@MessageMapping("/user-login")
-	@SendTo(TOPIC__NEW_MESSAGE)
-	public ChatMessage userLogin(User user) {
+	@SendTo(TOPIC__REFRESH_USERS_LIST)
+	public RefreshUserListMessage userLogin(User user) {
 		this.activeUsers.add(user);
-		return ChatMessage.fromSystem("К чату присоединился новый участник: " + user);
+		return new RefreshUserListMessage(
+			ChatMessage.fromSystem("К чату присоединился новый участник: " + user),
+			this.activeUsers
+		);
 	}
 
 	@MessageMapping("/user-logout")
-	@SendTo(TOPIC__NEW_MESSAGE)
-	public ChatMessage userLogout(User user) {
+	@SendTo(TOPIC__REFRESH_USERS_LIST)
+	public RefreshUserListMessage userLogout(User user) {
 		this.activeUsers.remove(user);
-		return ChatMessage.fromSystem("Чат покинул участник: " + user);
+		return new RefreshUserListMessage(
+			ChatMessage.fromSystem("Чат покинул участник: " + user),
+			this.activeUsers
+		);
 	}
 
 	@MessageMapping("/user-post")

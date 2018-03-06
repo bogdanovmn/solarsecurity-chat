@@ -17,16 +17,17 @@
 <!-- Форма логина -->
 
 <div id="loginBlock">
-	<h1>Добро пожаловать в чат!</h1>
+	<h1>Добро пожаловать в чат</h1>
 	<p>Введите свое имя и выберете цвет для Ваших сообщений</p>
 	<form>
 		<p>
 			<input type="text" id="loginName" placeholder="Ваше имя"/>
 			<label for="userColorId">Цвет</label>
 			<select id="userColorId">
-				<option value="1">green</option>
-				<option value="2">red</option>
-				<option value="3">blue</option>
+				<option value="1">черный</option>
+				<option value="2">красный</option>
+				<option value="3">синий</option>
+				<option value="4">зеленый</option>
 			</select>
 			<input id="loginButton" type="button" value="Войти в чат"/>
 		</p>
@@ -36,26 +37,24 @@
 <!-- Основной блок чата -->
 
 <div id="chatBlock">
-
-	<!-- Форма отправки сообщения -->
-
-	<form>
-		<p>
-			<input type="text" id="userPost" placeholder="Ваше сообщение"/>
-			<input id="messageButton" type="button" value="Послать"/>
-		</p>
-	</form>
-
-	<!-- Блок вывода сообщений -->
-
 	<div id="messagesBlock">
-		<span class="title">Сообщения:</span>
-	</div>
+		<h1>
+			Hello, <span id="userNameGreeting"></span>
+			<input id="logoutButton" type="button" value="Выйти"/>
+		</h1>
+		<div id="messages"></div>
+		<!-- Блок вывода активных пользователей -->
 
-	<!-- Блок вывода активных пользователей -->
-
-	<div id="usersBlock">
-		<span class="title">Пользователи:</span>
+		<div id="usersBlock">
+			<span class="title">Сейчас в чате:</span>
+			<div id="activeUsers"></div>
+		</div>
+		<form>
+			<p>
+				Написать: <input type="text" id="userPost" placeholder="Ваше сообщение"/>
+				<input id="sendMessageButton" type="button" value="Отправить"/>
+			</p>
+		</form>
 	</div>
 </div>
 

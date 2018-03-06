@@ -2,18 +2,19 @@ var stompClient = null;
 
 function userLogin() {
 	connect();
-	// sendUserLogin();
 	$("#loginBlock").hide();
 	$("#chatBlock").show();
-	$("#userPost").data("user-name", $("#loginName").val())
+	$("#userNameGreeting").text(
+		$("#loginName").val()
+	);
 }
 
 function userLogout() {
-	sendUserLogout()
+	sendUserLogout();
 	disconnect();
 	$("#loginBlock").show();
 	$("#chatBlock").hide();
-	$("#userPost").data("user-name", "")
+	$("#userNameGreeting").text("");
 }
 
 function connect() {
@@ -26,6 +27,10 @@ function connect() {
 			stompClient.subscribe('/topic/new-message', function (message) {
 				showNewMessage(JSON.parse(message.body));
 			});
+			stompClient.subscribe('/topic/refresh-users-list', function (message) {
+				showUsersListChange(JSON.parse(message.body));
+			});
+			sendUserLogin()
 		},
 		function (error) {
 			console.log('Connect error: ' + error);
@@ -46,7 +51,7 @@ function sendUserLogout() {
 		{},
 		JSON.stringify(
 			{
-				'name': $("#userPost").data("user-name").val()
+				'name': $("#userNameGreeting").text()
 			}
 		)
 	);
@@ -58,7 +63,7 @@ function sendUserLogin() {
 		{},
 		JSON.stringify(
 			{
-				'name': $("#loginName").val(),
+				'name': $("#userNameGreeting").text(),
 				'colorId': $("#userColorId").val()
 			}
 		)
@@ -66,26 +71,42 @@ function sendUserLogin() {
 }
 
 function sendUserPost() {
-	var userPost = $("#userPost");
-
 	stompClient.send(
 		"/app/user-post",
 		{},
 		JSON.stringify(
 			{
-				'userName': userPost.data("user-name"),
-				'text': userPost.val()
+				'userName': $("#userNameGreeting").text(),
+				'text': $("#userPost").val()
 			}
 		)
 	);
 }
 
-function showNewMessage(message) {
-	$("#messagesBlock").append("<p class='color" + message.colorId + "'>" + message.text + "</p>");
+function showNewMessage(chatMessage) {
+	$("#messages").append("<span class='color" + chatMessage.colorId + "'>" + chatMessage.text + "</span><br/>");
+	$("#messages").scrollTop(1E10)
 }
+
+function showUsersListChange(data) {
+	showNewMessage(data.chatMessage);
+
+	var usersHtml = $("#activeUsers");
+	var users = data.activeUsers;
+
+	usersHtml.text("");
+
+	$.each(users, function(key, user) {
+		usersHtml.append("<span class='color" + user.colorId + "'>" + user.name + "</span><br/>");
+	});
+}
+
+$(window).bind("beforeunload", function() {
+	sendUserLogout()
+});
 
 $(function () {
 	$("#loginButton").click(function() { userLogin(); });
 	$("#logoutButton").click(function() { userLogout(); });
-	$("#sendMessageButton").click(function() { sendMessage(); });
+	$("#sendMessageButton").click(function() { sendUserPost(); });
 });
