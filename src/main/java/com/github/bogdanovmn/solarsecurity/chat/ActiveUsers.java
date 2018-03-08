@@ -31,4 +31,8 @@ class ActiveUsers {
 			.map(this.users::get)
 			.collect(Collectors.toList());
 	}
+
+	boolean contains(User user) {
+		return this.users.containsKey(user.toString());
+	}
 }

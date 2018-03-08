@@ -31,4 +31,8 @@ class User {
 	public String toString() {
 		return this.name;
 	}
+
+	boolean hasName() {
+		return this.name != null && !this.name.isEmpty();
+	}
 }

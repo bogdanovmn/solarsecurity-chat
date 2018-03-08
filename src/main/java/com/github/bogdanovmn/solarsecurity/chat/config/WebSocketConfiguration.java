@@ -1,10 +1,11 @@
-package com.github.bogdanovmn.solarsecurity.chat;
+package com.github.bogdanovmn.solarsecurity.chat.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -12,13 +13,18 @@ public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfig
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/topic");
+		config.enableSimpleBroker("/topic", "/queue");
 		config.setApplicationDestinationPrefixes("/app");
 	}
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/chat-ws").withSockJS();
+		registry
+			.addEndpoint("/chat-ws")
+			.addInterceptors(
+				new HttpSessionHandshakeInterceptor()
+			)
+			.withSockJS();
 	}
 
 }

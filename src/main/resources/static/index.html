@@ -18,19 +18,30 @@
 
 <div id="loginBlock">
 	<h1>Добро пожаловать в чат</h1>
-	<p>Введите свое имя и выберете цвет для Ваших сообщений</p>
+	<h2 id="loginErrorMessage"></h2>
 	<form>
-		<p>
-			<input type="text" id="loginName" placeholder="Ваше имя"/>
-			<label for="userColorId">Цвет</label>
-			<select id="userColorId">
-				<option value="1">черный</option>
-				<option value="2">красный</option>
-				<option value="3">синий</option>
-				<option value="4">зеленый</option>
-			</select>
-			<input id="loginButton" type="button" value="Войти в чат"/>
-		</p>
+		<table class="form">
+			<tr>
+				<td>Представьтесь:</td>
+				<td><input type="text" id="loginName" placeholder="Ваше имя"/></td>
+			</tr>
+			<tr>
+				<td>Выберете цвет текста:</td>
+				<td>
+					<select id="userColorId">
+						<option value="1">черный</option>
+						<option value="2">красный</option>
+						<option value="3">синий</option>
+						<option value="4">зеленый</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input id="loginButton" type="button" value="Войти в чат"/>
+				</td>
+			</tr>
+		</table>
 	</form>
 </div>
 

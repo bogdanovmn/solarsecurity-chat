@@ -1,9 +1,13 @@
 package com.github.bogdanovmn.solarsecurity.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
+
+import javax.security.auth.login.LoginException;
 
 @Controller
 class ChatController {
@@ -16,10 +20,24 @@ class ChatController {
 		this.activeUsers = activeUsers;
 	}
 
+	@MessageExceptionHandler
+	@SendToUser("/queue/error")
+	ChatErrorMessage exceptionHandler(LoginException exception) {
+		return new ChatErrorMessage(exception.getMessage());
+	}
+
 	@MessageMapping("/user-login")
 	@SendTo(TOPIC__REFRESH_USERS_LIST)
-	public RefreshUserListMessage userLogin(User user) {
+	public RefreshUserListMessage userLogin(User user) throws LoginException {
+		if (!user.hasName()) {
+			throw new LoginException("empty name");
+		}
+		if (this.activeUsers.contains(user)) {
+			throw new LoginException("user already exists");
+		}
+
 		this.activeUsers.add(user);
+
 		return new RefreshUserListMessage(
 			ChatMessage.fromSystem("К чату присоединился новый участник: " + user),
 			this.activeUsers

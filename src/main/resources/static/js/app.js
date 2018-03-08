@@ -1,25 +1,37 @@
 var stompClient = null;
 
-function userLogin() {
-	connect();
+function switchToChat() {
 	$("#loginBlock").hide();
 	$("#chatBlock").show();
 	$("#userNameGreeting").text(
 		$("#loginName").val()
 	);
+	$("#loginErrorMessage").text("")
+}
+
+function switchToLoginForm() {
+	$("#loginBlock").show();
+	$("#chatBlock").hide();
+	$("#userNameGreeting").text("");
+	$("#activeUsers").text("");
+	$("#messages").text("");
+}
+
+function userLogin() {
+	connect();
+	switchToChat()
 }
 
 function userLogout() {
 	sendUserLogout();
 	disconnect();
-	$("#loginBlock").show();
-	$("#chatBlock").hide();
-	$("#userNameGreeting").text("");
+	switchToLoginForm()
 }
 
 function connect() {
 	var socket = new SockJS('/chat-ws');
 	stompClient = Stomp.over(socket);
+	stompClient.debug = null;
 	stompClient.connect(
 		{},
 		function (frame) {
@@ -29,6 +41,9 @@ function connect() {
 			});
 			stompClient.subscribe('/topic/refresh-users-list', function (message) {
 				showUsersListChange(JSON.parse(message.body));
+			});
+			stompClient.subscribe('/user/queue/error', function (message) {
+				loginErrorHandle(JSON.parse(message.body));
 			});
 			sendUserLogin()
 		},
@@ -43,6 +58,12 @@ function disconnect() {
 		stompClient.disconnect();
 	}
 	console.log("Disconnected");
+}
+
+function loginErrorHandle(error) {
+	disconnect()
+	switchToLoginForm();
+	$("#loginErrorMessage").text(error.text)
 }
 
 function sendUserLogout() {
