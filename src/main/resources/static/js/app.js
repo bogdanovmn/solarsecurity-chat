@@ -29,7 +29,7 @@ function userLogout() {
 }
 
 function connect() {
-	var socket = new SockJS('/chat-ws');
+	var socket = new SockJS('chat-ws');
 	stompClient = Stomp.over(socket);
 	stompClient.debug = null;
 	stompClient.connect(

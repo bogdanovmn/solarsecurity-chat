@@ -15,4 +15,6 @@
 
 table.form { border: 0px; padding: 5px; }
 
+#loginErrorMessage { color: red }
+
 

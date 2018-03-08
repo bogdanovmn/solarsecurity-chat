@@ -30,10 +30,10 @@ class ChatController {
 	@SendTo(TOPIC__REFRESH_USERS_LIST)
 	public RefreshUserListMessage userLogin(User user) throws LoginException {
 		if (!user.hasName()) {
-			throw new LoginException("empty name");
+			throw new LoginException("Имя не задано");
 		}
 		if (this.activeUsers.contains(user)) {
-			throw new LoginException("user already exists");
+			throw new LoginException("Пользователь с таким именем уже есть в чате");
 		}
 
 		this.activeUsers.add(user);
